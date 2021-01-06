@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="utf-8">
+        <title>
+            미니 프로젝트 5
+        </title>
+        <body>
+            <div id="box">box
+                <span>boostcourse</span>
+            </div>
+
+            <script>
+                document.querySelector("#box").style.color="blue"
+                document.querySelector("#box span").style.color="red"
+            </script>
+        </body>
+    </head>
+</html>
+
+<!-- 
+    <span>boostcourse</span>만 셀렉트 하는게 문제였는데, 실험을 통해 해보았다.
+
+    document.querySelector("#box")로 색깔을 바꾸면 box외에 자식인 span의 boostcourse까지 색깔이 바뀐다.
+    
+    하지만 doucument.querySelector("#box span")으로 수정을 하면 box가 아닌 자식 span만 셀렉트가 되어서 색깔이 바뀜을 알 수 있다.
+-->
