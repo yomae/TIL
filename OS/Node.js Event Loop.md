@@ -33,6 +33,6 @@
 
 ex) 주방(요리) = I/O, 점원 = 스레드, 고객 = 요청
 
-![https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3b27650f-b32e-4f72-8e0a-f22668e504f4/Untitled.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3b27650f-b32e-4f72-8e0a-f22668e504f4/Untitled.png)
+![https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FVsBiu%2Fbtqv7h6bGLL%2FFCYUV7q82MrAiwEjQFLP10%2Fimg.png)
 
 - 점원(스레드)은 한명이지만, 주방(요리) 작업은 **논블로킹 작업으로 Background에서 작업**하므로, 고객(요청)이 대기하지 않아도, 바로 주문이 가능하며 주문 후, 요리가 완료되면 바로바로 서빙이 된다.
