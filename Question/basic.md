@@ -22,3 +22,88 @@
 - Promise를 사용하게되면 프로미스 객체에 비동기가 처리된 결과값이 저장되므로, .then메소드를 통해 그값을 원하는 때에 사용할 수 있다. 또한 동작의 성공, 실패에 따라 resolve, reject를 사용해서 각각 다른 코드를 실행할 수 있다. then, catch
 
 - async/await는 프로미스를 좀더 쉽게 사용할 수 있도록 한 문법이며 프로미스와 콜백의 같은 문제점인 콜백지옥, then지옥 등을 없앨 수 있다. 동기적인 코드 흐름으로 개발하기 좋다. try, catch
+
+## 참조에 의한 객체 복사
+
+- 객체는 ‘**참조에 의해(by reference)**’ 저장되고 복사된다.
+- 원시값(문자열, 숫자, 불린 값)은 ‘값 그대로' 저장, 할당되고 복사된다.
+
+```jsx
+// 객체 -> 메모리 내 어딘가에 저장.
+// 변수 user -> 그 객체를 '참조'할 수 있는 값이 저장됨.
+
+let user = { name: "Kim" };
+let admin = user; // 그 객체를 '참조'할 수 있는 값을 복사함.
+
+admin.name = 'Pete'; // 참조 값에 의해 변경됨
+console.log(user.name); // 'Pete'
+-----------------------------------------------------
+
+let a = {};
+let b = a;
+
+// 참조에 의한 복사 -> a와 b는 같은 객체를 참조함
+
+-----------------------------------------------------
+
+let a = {};
+let b = {};
+
+// 겉으로는 같아보이지만, 독립된 객체임. 일치,동등비교시 false
+```
+
+- 객체의 진짜 복사본을 만들려면 `Object.assign` - 얕은 복사(shallow copy) 혹은 깊은 복사로
+
+### 깊은 복사는 언제?
+
+- 객체의 모든 프로퍼티가 원시값인 경우 얕은 복사
+- 어떤 프로퍼티가 다른 객체에 대한 참조 값일 경우?
+  → 얕은 복사를 할 경우에는 해당 프로퍼티는 같은 객체에 대한 참조값을 공유하게 될 것이므로 복제가 되었다 볼 수 없음.
+  → **얕은 복사본은 중첩 객체를 처리할 수 없다.**
+- 이 경우에는 key의 각 값을 검사하면서, 그 값이 객체인 경우 객체의 구조도 복사해주는 반복문을 사용해야 함
+
+```jsx
+let clone = {};
+for (let key in obj) {
+  if (typeof obj[key] !== "object") {
+    clone[key] = obj[key];
+  } else {
+    // value가 객체에 대한 참조값인 경우
+    // 그 객체를 다시 복사해서 넣어주자
+    let innerClone = {};
+    for (let innerkey in obj[key]) {
+      innerClone[innerkey] = obj[key][innerkey];
+    }
+    clone[key] = innerClone;
+  }
+}
+```
+
+- `lodash` 라이브러리의 메서드인 `_.cloneDeep(obj)` 를 사용 가능.
+
+## virtual DOM이 무엇인가?
+
+- virtual DOM은 실제 DOM 변화를 최소화 시켜주는 역할을 함.
+- 브라우저는 HTML파일을 스크린에 보여주기 위해 DOM 노드 트리 생성, 렌더 트리 생성, 레이아웃, 페인팅 과정을 거침.
+- DOM 노드는 HTML의 각 엘리먼트와 연관되어 있어 작은 변화에도 복잡한 과정들이 다시 실행되기 때문에, DOM의 변화가 잦을 경우 성능이 저하된다.
+- virtual DOM은 뷰에 변화가 있다면 그 변화가 실제 DOM에 적용되기 전에 virtual DOM에 적용시키고 최종 결과만 실제 DOM에 전달함. 그렇기 때문에 여러 변화가 있다 하더라도 실제 DOM은 그 변화를 1회로 인식하여 단 한번의 렌더링 과정만 거치게 됨.
+
+## React에서 state를 직접 변경하지 않고 setState를 사용하는 이유
+
+- 변경 판단 근거가 객체의 메모리 주소이기 때문에 state를 직접 수정하는 경우에는 변경이 안된 것으로 판단한다. update가 안된것으로 판단하기때문에 렌더링이 새로이 되지 않는다.
+- 그래서 직접 변경하지않고 새로운 객체를 만들어서 할당하는 것으로 변경해야 하는 것이며 그래서 setState()를 사용한다.
+- 컴포넌트 생성후 mount에서 render -> update상태 후 shouldcomponentupdate값이 true -> render
+
+## React LifeCycle
+
+- mount / update / unmount 3가지 과정으로 구분할 수 있음.
+
+1. 컴포넌트가 처음 실행될때 mount -> 메인 함수가 실행되는 부분.
+2. props or state 가 업데이트 될때 update -> useState 등등 프롭스나 상태를 바꿀 경우 updating.
+3. 컴포넌트가 제거되는 것이 unmount
+
+- 함수형 컴포넌트에서 useEffect를 사용하면 위 3가지의 전반적인 과정을 모두 수행할 수 있음.
+
+1. 의존성 배열에 아무것도 없을 때 ( 첫렌더링만)
+2. 의존성 배열에 상태가 있을 경우 ( update )
+3. useEffect 내부에 return 문에 unmount 코드를 작성 (unmount)
