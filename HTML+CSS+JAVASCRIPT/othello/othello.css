@@ -1,0 +1,26 @@
+body {
+  background-color: antiquewhite;
+}
+#container {
+  display: flex;
+}
+
+#current_turn {
+  width: 400px;
+  font-size: 50px;
+}
+
+#stone {
+  width: 200px;
+  font-size: 25px;
+}
+
+#timer {
+  width: 200px;
+  font-size: 50px;
+  text-align: right;
+}
+
+#othello_canvas {
+  border: 10px solid #000000;
+}
