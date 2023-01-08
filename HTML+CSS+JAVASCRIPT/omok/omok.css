@@ -1,0 +1,25 @@
+body {
+  background-color: antiquewhite;
+}
+#container {
+  display: flex;
+}
+
+#omok_title {
+  width: 200px;
+  font-size: 50px;
+}
+#current_turn {
+  width: 400px;
+  font-size: 50px;
+}
+
+#timer {
+  width: 200px;
+  font-size: 50px;
+  text-align: right;
+}
+
+#omok_canvas {
+  border: 10px solid #000000;
+}
